@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             TextSwipeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "TextSwipe",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
