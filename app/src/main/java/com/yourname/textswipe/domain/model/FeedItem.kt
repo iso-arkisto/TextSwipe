@@ -7,7 +7,7 @@ sealed interface FeedItem {
 
     data class Text(
         override val id: String = UUID.randomUUID().toString(),
-        val category: String,
+        val category: Category,
         val title: String,
         val content: String
     ) : FeedItem
