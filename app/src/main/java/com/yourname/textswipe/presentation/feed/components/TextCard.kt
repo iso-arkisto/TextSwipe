@@ -44,120 +44,115 @@ fun TextCard(
     var isExpanded by remember { mutableStateOf(false) }
     var showExpandArrow by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Card(
-            modifier = modifier
-                .fillMaxWidth(0.85f)
-                .fillMaxHeight(0.65f)
-                .aspectRatio(0.7f)
-                .offset { IntOffset(offset.value.x.roundToInt(), offset.value.y.roundToInt()) }
-                .graphicsLayer {
-                    rotationZ = (offset.value.x / 20f).coerceIn(-15f, 15f)
-                    alpha = 1f - (abs(offset.value.x) / screenWidth).coerceIn(0f, 0.4f)
-                }
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragEnd = {
-                            coroutineScope.launch {
-                                if (abs(offset.value.x) > swipeThreshold) {
-                                    val targetX = if (offset.value.x > 0) screenWidth else -screenWidth
-                                    offset.animateTo(
-                                        targetValue = Offset(targetX, offset.value.y),
-                                        animationSpec = tween(durationMillis = 300)
-                                    )
-                                    onSwiped()
-                                } else {
-                                    offset.animateTo(
-                                        targetValue = Offset.Zero,
-                                        animationSpec = tween(durationMillis = 300)
-                                    )
-                                }
-                            }
-                        },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            coroutineScope.launch {
-                                offset.snapTo(
-                                    Offset(
-                                        x = offset.value.x + dragAmount.x,
-                                        y = offset.value.y + dragAmount.y
-                                    )
+    Card(
+        modifier = modifier
+            .fillMaxWidth(0.85f)
+            .fillMaxHeight(0.65f)
+            .aspectRatio(0.7f)
+            .offset { IntOffset(offset.value.x.roundToInt(), offset.value.y.roundToInt()) }
+            .graphicsLayer {
+                rotationZ = (offset.value.x / 20f).coerceIn(-15f, 15f)
+                alpha = 1f - (abs(offset.value.x) / screenWidth).coerceIn(0f, 0.4f)
+            }
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragEnd = {
+                        coroutineScope.launch {
+                            if (abs(offset.value.x) > swipeThreshold) {
+                                val targetX = if (offset.value.x > 0) screenWidth else -screenWidth
+                                offset.animateTo(
+                                    targetValue = Offset(targetX, offset.value.y),
+                                    animationSpec = tween(durationMillis = 300)
+                                )
+                                onSwiped()
+                            } else {
+                                offset.animateTo(
+                                    targetValue = Offset.Zero,
+                                    animationSpec = tween(durationMillis = 300)
                                 )
                             }
                         }
-                    )
-                },
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                Text(
-                    text = feedItem.category.name,
-                    style = if(feedItem.title != null) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    },
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        coroutineScope.launch {
+                            offset.snapTo(
+                                Offset(
+                                    x = offset.value.x + dragAmount.x,
+                                    y = offset.value.y + dragAmount.y
+                                )
+                            )
+                        }
+                    }
                 )
+            },
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
 
-                feedItem.title?.let { title ->
+            Text(
+                text = feedItem.category.name,
+                style = if(feedItem.title != null) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
 
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+            feedItem.title?.let { title ->
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = feedItem.content,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        maxLines = if (isExpanded) Int.MAX_VALUE else 6,
-                        overflow = TextOverflow.Ellipsis,
-                        onTextLayout = { textLayoutResult ->
-                            if (textLayoutResult.hasVisualOverflow && !isExpanded) {
-                                showExpandArrow = true
-                            }
-                        },
-                        modifier = Modifier.then(
-                            if (isExpanded) Modifier.verticalScroll(rememberScrollState())
-                            else Modifier
-                        )
-                    )
-                }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (showExpandArrow || isExpanded) {
-                        IconButton(onClick = { isExpanded = !isExpanded }) {
-                            Icon(
-                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = if (isExpanded) "Collapse" else "Expand"
-                            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = feedItem.content,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 6,
+                    overflow = TextOverflow.Ellipsis,
+                    onTextLayout = { textLayoutResult ->
+                        if (textLayoutResult.hasVisualOverflow && !isExpanded) {
+                            showExpandArrow = true
                         }
+                    },
+                    modifier = Modifier.then(
+                        if (isExpanded) Modifier.verticalScroll(rememberScrollState())
+                        else Modifier
+                    )
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (showExpandArrow || isExpanded) {
+                    IconButton(onClick = { isExpanded = !isExpanded }) {
+                        Icon(
+                            imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = if (isExpanded) "Collapse" else "Expand"
+                        )
                     }
                 }
             }
