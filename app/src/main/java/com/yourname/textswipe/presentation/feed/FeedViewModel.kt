@@ -30,7 +30,7 @@ class FeedViewModel @Inject constructor(
                 _uiState.value = FeedUiState.Success(updatedFeed)
             }
 
-            if(currentState.feedItems.size < 2) {
+            if(currentState.feedItems.size < 5) {
                 loadMoreItems()
             }
         }
