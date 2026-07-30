@@ -9,11 +9,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.presentation.feed.components.TextCard
 
 @Composable
-fun FeedScreen(viewModel: FeedViewModel) {
+fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
