@@ -7,11 +7,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.presentation.feed.components.TextCard
+import kotlinx.coroutines.NonCancellable.key
 
 @Composable
 fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
@@ -27,12 +29,14 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                 val feedItems = state.feedItems
 
                 feedItems.take(2).reversed().forEach { item ->
-                    when(item) {
-                        is FeedItem.Text -> {
-                            TextCard(
-                                feedItem = item,
-                                onSwiped = viewModel::onItemSwiped
-                            )
+                    key(item.id) {
+                        when(item) {
+                            is FeedItem.Text -> {
+                                TextCard(
+                                    feedItem = item,
+                                    onSwiped = viewModel::onItemSwiped
+                                )
+                            }
                         }
                     }
                 }
