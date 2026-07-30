@@ -3,8 +3,9 @@ package com.yourname.textswipe.data.repository
 import com.yourname.textswipe.domain.model.DefaultCategories
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.domain.repository.FeedRepository
+import javax.inject.Inject
 
-class FeedRepositoryImpl : FeedRepository {
+class FeedRepositoryImpl @Inject constructor() : FeedRepository {
 
     private val feedItems = listOf(
         FeedItem.Text(
