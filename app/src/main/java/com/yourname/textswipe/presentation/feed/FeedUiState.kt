@@ -10,6 +10,6 @@ sealed interface FeedUiState {
     ) : FeedUiState
 
     data class Error(
-        val message: String
+        val message: String?
     ) : FeedUiState
 }
