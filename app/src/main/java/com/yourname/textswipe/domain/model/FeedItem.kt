@@ -11,4 +11,11 @@ sealed interface FeedItem {
         val title: String? = null,
         val content: String
     ) : FeedItem
+
+    data class Quote(
+        override val id: String = UUID.randomUUID().toString(),
+        val text: String,
+        val author: Author,
+        val tags: List<String>
+    ) : FeedItem
 }
