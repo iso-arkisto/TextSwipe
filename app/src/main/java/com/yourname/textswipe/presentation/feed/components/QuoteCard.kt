@@ -3,9 +3,11 @@ package com.yourname.textswipe.presentation.feed.components
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -15,25 +17,31 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.yourname.textswipe.domain.model.FeedItem
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
-fun TextCard(
-    feedItem: FeedItem.Text,
+fun QuoteCard(
+    feedItem: FeedItem.Quote,
     onSwiped: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,6 +52,12 @@ fun TextCard(
 
     var isExpanded by remember { mutableStateOf(false) }
     var showExpandArrow by remember { mutableStateOf(false) }
+
+    val imageRequest = ImageRequest.Builder(LocalContext.current)
+        .data(feedItem.author.imageUrl)
+        .setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36")
+        .crossfade(true)
+        .build()
 
     Card(
         modifier = modifier
@@ -99,49 +113,54 @@ fun TextCard(
             verticalArrangement = Arrangement.Center
         ) {
 
-            Text(
-                text = feedItem.category.name,
-                style = if(feedItem.title != null) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary
+            AsyncImage(
+                model = imageRequest,
+                contentDescription = feedItem.author.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
 
-            feedItem.title?.let { title ->
+            Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            Text(
+                text = feedItem.author.name,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = feedItem.content,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                    maxLines = if (isExpanded) Int.MAX_VALUE else 6,
-                    overflow = TextOverflow.Ellipsis,
-                    onTextLayout = { textLayoutResult ->
-                        if (textLayoutResult.hasVisualOverflow && !isExpanded) {
-                            showExpandArrow = true
-                        }
-                    },
-                    modifier = Modifier.then(
-                        if (isExpanded) Modifier.verticalScroll(rememberScrollState())
-                        else Modifier
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "«${feedItem.text}»",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 24.sp,
+                        maxLines = if (isExpanded) Int.MAX_VALUE else 6,
+                        overflow = TextOverflow.Ellipsis,
+                        onTextLayout = { textLayoutResult ->
+                            if (textLayoutResult.hasVisualOverflow && !isExpanded) {
+                                showExpandArrow = true
+                            }
+                        },
+                        modifier = Modifier.then(
+                            if (isExpanded) Modifier.verticalScroll(rememberScrollState())
+                            else Modifier
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
 
             Box(
@@ -160,6 +179,18 @@ fun TextCard(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = feedItem.tags.joinToString(separator = " ") { "#$it" },
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                lineHeight = 24.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.yourname.textswipe.data.repository
 
+import com.yourname.textswipe.domain.model.DefaultAuthors
 import com.yourname.textswipe.domain.model.DefaultCategories
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.domain.repository.FeedRepository
@@ -25,6 +26,21 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
         FeedItem.Text(
             category = DefaultCategories.JOKES,
             content = "How does the ocean say hi? It waves!"
+        ),
+        FeedItem.Quote(
+            text = "I know that I know nothing.",
+            author = DefaultAuthors.SOCRATES,
+            tags = listOf("humility", "wisdom", "awareness")
+        ),
+        FeedItem.Quote(
+            text = "The definition of insanity is doing the same thing over and over and expecting different results.",
+            author = DefaultAuthors.ALBERT_EINSTEIN,
+            tags = listOf("growth", "choices", "mistakes", "pattern")
+        ),
+        FeedItem.Quote(
+            text = "Wise men talk because they have something to say; fools, because they would like to say something.",
+            author = DefaultAuthors.PLATO,
+            tags = listOf("wisdom", "silence", "speech")
         )
     )
 

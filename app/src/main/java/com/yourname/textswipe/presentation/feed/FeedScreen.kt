@@ -1,8 +1,10 @@
 package com.yourname.textswipe.presentation.feed
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,16 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yourname.textswipe.domain.model.FeedItem
+import com.yourname.textswipe.presentation.feed.components.QuoteCard
 import com.yourname.textswipe.presentation.feed.components.TextCard
-import kotlinx.coroutines.NonCancellable.key
 
 @Composable
 fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center,
     ) {
         when(val state = uiState) {
             is FeedUiState.Loading -> CircularProgressIndicator()
@@ -33,6 +37,12 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                         when(item) {
                             is FeedItem.Text -> {
                                 TextCard(
+                                    feedItem = item,
+                                    onSwiped = viewModel::onItemSwiped
+                                )
+                            }
+                            is FeedItem.Quote -> {
+                                QuoteCard(
                                     feedItem = item,
                                     onSwiped = viewModel::onItemSwiped
                                 )
