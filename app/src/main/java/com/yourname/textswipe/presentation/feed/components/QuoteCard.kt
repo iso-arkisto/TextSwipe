@@ -128,7 +128,8 @@ fun QuoteCard(
             Text(
                 text = feedItem.author.name,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -156,7 +157,8 @@ fun QuoteCard(
                         modifier = Modifier.then(
                             if (isExpanded) Modifier.verticalScroll(rememberScrollState())
                             else Modifier
-                        )
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -171,7 +173,8 @@ fun QuoteCard(
                     IconButton(onClick = { isExpanded = !isExpanded }) {
                         Icon(
                             imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = if (isExpanded) "Collapse" else "Expand"
+                            contentDescription = if (isExpanded) "Collapse" else "Expand",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -183,7 +186,8 @@ fun QuoteCard(
                 text = feedItem.tags.joinToString(separator = " ") { "#$it" },
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
-                lineHeight = 24.sp
+                lineHeight = 24.sp,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
 
