@@ -6,5 +6,6 @@ data class PlatformCategory(
     val id: String = UUID.randomUUID().toString(),
     val platformId: String,
     val name: String,
+    val description: String? = null,
     val isCustom: Boolean = false
 )
