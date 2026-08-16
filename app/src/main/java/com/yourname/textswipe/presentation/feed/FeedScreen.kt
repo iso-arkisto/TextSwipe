@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yourname.textswipe.domain.model.FeedItem
+import com.yourname.textswipe.presentation.feed.components.ForumPostCard
 import com.yourname.textswipe.presentation.feed.components.QuoteCard
 import com.yourname.textswipe.presentation.feed.components.TextCard
 
@@ -43,6 +44,12 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                             }
                             is FeedItem.Quote -> {
                                 QuoteCard(
+                                    feedItem = item,
+                                    onSwiped = viewModel::onItemSwiped
+                                )
+                            }
+                            is FeedItem.ForumPost -> {
+                                ForumPostCard(
                                     feedItem = item,
                                     onSwiped = viewModel::onItemSwiped
                                 )
