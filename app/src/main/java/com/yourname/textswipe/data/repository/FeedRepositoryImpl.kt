@@ -18,39 +18,47 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
 
     private val feedItems = listOf(
         FeedItem.Text(
+            id = "fact_1",
             title = "Dolphins have names",
             category = DefaultCategories.FACTS,
             content = "They communicate using a unique whistle. Each dolphin develops its own signal as a youngling. Other members of the pod use this whistle to call out to a specific individual."
         ),
         FeedItem.Text(
+            id = "fact_2",
             title = "Honey never spoils",
             category = DefaultCategories.FACTS,
             content = "Archaeologists have found pots of honey in Egyptian tombs that were over 3,000 years old. The product was completely edible. It has too little moisture and is highly acidic, so bacteria cannot thrive in it."
         ),
         FeedItem.Text(
+            id = "joke_1",
             category = DefaultCategories.JOKES,
             content = "My grandfather always said, \"If it's hard for you to walk, it means you're climbing.\" He was a wonderful man. But as a mountaineering guide, he was simply terrible."
         ),
         FeedItem.Text(
+            id = "joke_2",
             category = DefaultCategories.JOKES,
             content = "How does the ocean say hi? It waves!"
         ),
         FeedItem.Quote(
+            id = "quote_1",
             text = "I know that I know nothing.",
             author = DefaultAuthors.SOCRATES,
             tags = listOf("humility", "wisdom", "awareness")
         ),
         FeedItem.Quote(
+            id = "quote_2",
             text = "The definition of insanity is doing the same thing over and over and expecting different results.",
             author = DefaultAuthors.ALBERT_EINSTEIN,
             tags = listOf("growth", "choices", "mistakes", "pattern")
         ),
         FeedItem.Quote(
+            id = "quote_3",
             text = "Wise men talk because they have something to say; fools, because they would like to say something.",
             author = DefaultAuthors.PLATO,
             tags = listOf("wisdom", "silence", "speech")
         ),
         FeedItem.ForumPost(
+            id = "story_1",
             tags = listOf("pitbike","situation","no_accident","idiocy","inadequacy","impudence","car","rudeness","text"),
             category = DefaultCategories.STORIES,
             platformCategory = PIKABU_TRANSPORT,
@@ -69,6 +77,7 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             ))
         ),
         FeedItem.ForumPost(
+            id = "story_2",
             tags = listOf("passengers","public_transport","transport","dushanbe","bus","longread"),
             category = DefaultCategories.STORIES,
             platformCategory = PIKABU_TRANSPORT,
@@ -92,6 +101,7 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             ))
         ),
         FeedItem.ForumPost(
+            id = "story_3",
             tags = listOf("languagelearning","collegelife","humor","romance"),
             category = DefaultCategories.STORIES,
             platformCategory = REDDIT_TIFU,
@@ -108,6 +118,7 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             ))
         ),
         FeedItem.ForumPost(
+            id = "story_4",
             tags = listOf("travelstories","holidayvibe","vacation","awkward","hotel_life"),
             category = DefaultCategories.STORIES,
             platformCategory = FML_VACATION,
