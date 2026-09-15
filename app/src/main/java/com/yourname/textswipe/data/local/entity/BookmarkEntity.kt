@@ -16,6 +16,5 @@ data class BookmarkEntity(
     @ColumnInfo(name = "item_id")
     val itemId: String,
 
-    val folderId: String,
     val savedAt: Long = System.currentTimeMillis()
 )
