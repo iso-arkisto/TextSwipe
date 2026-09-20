@@ -1,9 +1,7 @@
 package com.yourname.textswipe.data.repository
 
-import com.yourname.textswipe.domain.model.Category
 import com.yourname.textswipe.domain.model.DefaultAuthors
 import com.yourname.textswipe.domain.model.DefaultCategories
-import com.yourname.textswipe.domain.model.DefaultPlatformCategories
 import com.yourname.textswipe.domain.model.DefaultPlatformCategories.FML_VACATION
 import com.yourname.textswipe.domain.model.DefaultPlatformCategories.PIKABU_TRANSPORT
 import com.yourname.textswipe.domain.model.DefaultPlatformCategories.REDDIT_TIFU
@@ -136,7 +134,19 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
         )
     )
 
-    override suspend fun getFeedItems(): List<FeedItem> {
-        return feedItems.shuffled()
+    override suspend fun getFeedItems(
+         firstItemId: String?
+    ): List<FeedItem> {
+       val firstItem = firstItemId?.let { getItemById(it) }
+
+        return if(firstItem != null) {
+            listOf(firstItem) + feedItems.shuffled()
+        } else {
+            feedItems.shuffled()
+        }
+    }
+
+    override suspend fun getItemById(itemId: String): FeedItem? {
+        return feedItems.find { it.id == itemId }
     }
 }
