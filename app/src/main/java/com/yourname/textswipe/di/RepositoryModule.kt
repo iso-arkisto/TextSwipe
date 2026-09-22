@@ -1,6 +1,8 @@
 package com.yourname.textswipe.di
 
+import com.yourname.textswipe.data.repository.BookmarkRepositoryImpl
 import com.yourname.textswipe.data.repository.FeedRepositoryImpl
+import com.yourname.textswipe.domain.repository.BookmarkRepository
 import com.yourname.textswipe.domain.repository.FeedRepository
 import dagger.Binds
 import dagger.Module
@@ -16,4 +18,10 @@ abstract class RepositoryModule {
     abstract fun bindFeedRepository(
         feedRepositoryImpl: FeedRepositoryImpl
     ): FeedRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBookmarkRepository(
+        bookmarkRepositoryImpl: BookmarkRepositoryImpl
+    ): BookmarkRepository
 }
