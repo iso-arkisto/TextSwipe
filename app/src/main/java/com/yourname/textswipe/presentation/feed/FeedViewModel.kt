@@ -1,7 +1,5 @@
 package com.yourname.textswipe.presentation.feed
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -82,7 +80,6 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun toggleBookmark() {
         val isBookmarkedValue = isBookmarked.value
         val currentState = _uiState.value

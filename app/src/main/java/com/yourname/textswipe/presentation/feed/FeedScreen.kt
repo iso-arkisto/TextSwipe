@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.presentation.feed.components.ForumPostCard
+import com.yourname.textswipe.presentation.feed.components.ItemCard
 import com.yourname.textswipe.presentation.feed.components.QuoteCard
 import com.yourname.textswipe.presentation.feed.components.TextCard
 
@@ -55,7 +56,7 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.BottomCenter,
         ) {
             when(val state = uiState) {
                 is FeedUiState.Loading -> CircularProgressIndicator()
@@ -66,21 +67,21 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                         key(item.id) {
                             when(item) {
                                 is FeedItem.Text -> {
-                                TextCard(
-                                    feedItem = item,
-                                    onSwiped = viewModel::onItemSwiped
-                                )
+                                    ItemCard(
+                                        onSwiped = viewModel::onItemSwiped,
+                                        content = { TextCard(item) }
+                                    )
                                 }
                                 is FeedItem.Quote -> {
-                                    QuoteCard(
-                                        feedItem = item,
-                                        onSwiped = viewModel::onItemSwiped
+                                    ItemCard(
+                                        onSwiped = viewModel::onItemSwiped,
+                                        content = { QuoteCard(item) }
                                     )
                                 }
                                 is FeedItem.ForumPost -> {
-                                    ForumPostCard(
-                                        feedItem = item,
-                                        onSwiped = viewModel::onItemSwiped
+                                    ItemCard(
+                                        onSwiped = viewModel::onItemSwiped,
+                                        content = { ForumPostCard(item) }
                                     )
                                 }
                             }
