@@ -12,4 +12,5 @@ interface BookmarkRepository {
     suspend fun deleteBookmarks(bookmarks: List<Bookmark>)
 
     fun isBookmarked(itemId: String): Flow<Boolean>
+    suspend fun isBookmarkedOneShot(itemId: String): Boolean
 }
