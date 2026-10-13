@@ -8,7 +8,6 @@ import com.yourname.textswipe.domain.repository.BookmarkRepository
 import com.yourname.textswipe.domain.usecase.DeleteBookmarkUseCase
 import com.yourname.textswipe.domain.usecase.GetBookmarksUseCase
 import com.yourname.textswipe.domain.usecase.SaveBookmarkUseCase
-import com.yourname.textswipe.utils.FeedRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -81,12 +80,6 @@ class BookmarkViewModel @Inject constructor(
             } else {
                 _uiEvent.send(BookmarkUiEvent.ShowSnackbar("Failed to restore the bookmark"))
             }
-        }
-    }
-
-    fun onBookmarkClicked(itemId: String) {
-        viewModelScope.launch {
-            _uiEvent.send(BookmarkUiEvent.Navigate(FeedRoute(itemId)))
         }
     }
 
