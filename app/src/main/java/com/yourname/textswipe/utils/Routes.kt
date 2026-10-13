@@ -7,3 +7,6 @@ data class FeedRoute(val firstItemId: String? = null)
 
 @Serializable
 data object BookmarksRoute
+
+@Serializable
+data class DetailRoute(val itemId: String)
