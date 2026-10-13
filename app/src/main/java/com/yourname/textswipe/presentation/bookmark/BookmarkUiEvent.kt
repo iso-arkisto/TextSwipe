@@ -5,10 +5,6 @@ sealed interface BookmarkUiEvent {
         val itemId: String
     ) : BookmarkUiEvent
 
-    data class Navigate(
-        val route: Any
-    ) : BookmarkUiEvent
-
     data class ShowSnackbar(
         val message: String
     ) : BookmarkUiEvent
