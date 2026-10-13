@@ -65,26 +65,25 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
 
                     feedItems.take(2).reversed().forEach { item ->
                         key(item.id) {
-                            when(item) {
-                                is FeedItem.Text -> {
-                                    ItemCard(
-                                        onSwiped = viewModel::onItemSwiped,
-                                        content = { TextCard(item) }
-                                    )
+                            ItemCard(
+                                onSwiped = viewModel::onItemSwiped,
+                                isSwipeable = true,
+                                content = {
+                                    when (item) {
+                                        is FeedItem.Text -> {
+                                            TextCard(item)
+                                        }
+
+                                        is FeedItem.Quote -> {
+                                            QuoteCard(item)
+                                        }
+
+                                        is FeedItem.ForumPost -> {
+                                            ForumPostCard(item)
+                                        }
+                                    }
                                 }
-                                is FeedItem.Quote -> {
-                                    ItemCard(
-                                        onSwiped = viewModel::onItemSwiped,
-                                        content = { QuoteCard(item) }
-                                    )
-                                }
-                                is FeedItem.ForumPost -> {
-                                    ItemCard(
-                                        onSwiped = viewModel::onItemSwiped,
-                                        content = { ForumPostCard(item) }
-                                    )
-                                }
-                            }
+                            )
                         }
                     }
 
@@ -97,7 +96,7 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                         ) {
                             Icon(
                                 imageVector = if(isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                                contentDescription = "Save to bookmarks",
+                                contentDescription = if(isBookmarked) "Remove from bookmarks" else "Save to bookmarks",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
