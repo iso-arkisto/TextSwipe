@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.yourname.textswipe.presentation.bookmark.BookmarkScreen
+import com.yourname.textswipe.presentation.details.DetailScreen
 import com.yourname.textswipe.presentation.feed.FeedScreen
 import com.yourname.textswipe.utils.BookmarksRoute
+import com.yourname.textswipe.utils.DetailRoute
 import com.yourname.textswipe.utils.FeedRoute
 
 @Composable
@@ -25,7 +27,12 @@ fun NavGraph(
         }
         composable<BookmarksRoute> {
             BookmarkScreen(
-                onNavigate = { navController.navigate(it) }
+                onBookmarkClick = { navController.navigate(DetailRoute(it)) }
+            )
+        }
+        composable<DetailRoute> {
+            DetailScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
     }
