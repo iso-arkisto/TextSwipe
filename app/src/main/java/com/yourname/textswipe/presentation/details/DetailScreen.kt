@@ -1,0 +1,120 @@
+package com.yourname.textswipe.presentation.details
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.yourname.textswipe.domain.model.FeedItem
+import com.yourname.textswipe.presentation.feed.components.ForumPostCard
+import com.yourname.textswipe.presentation.feed.components.ItemCard
+import com.yourname.textswipe.presentation.feed.components.QuoteCard
+import com.yourname.textswipe.presentation.feed.components.TextCard
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailScreen(
+    viewModel: DetailViewModel = hiltViewModel(),
+    onBackClick: () -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val isBookmarked by viewModel.isBookmarked.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is DetailUiEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(message = event.message)
+                }
+            }
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Item Details") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = viewModel::toggleBookmark) {
+                        Icon(
+                            imageVector = if(isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                            contentDescription = if(isBookmarked) "Remove from bookmarks" else "Save to bookmarks",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(paddingValues),
+            contentAlignment = Alignment.BottomCenter,
+        ) {
+            when (val state = uiState) {
+                is DetailUiState.Loading -> CircularProgressIndicator()
+                is DetailUiState.Success -> {
+                    val item = state.feedItem
+
+                    ItemCard(
+                        onSwiped = {},
+                        isSwipeable = false,
+                        modifier = Modifier.padding(all = 10.dp),
+                        content = {
+                            when (item) {
+                                is FeedItem.Text -> {
+                                    TextCard(item)
+                                }
+
+                                is FeedItem.Quote -> {
+                                    QuoteCard(item)
+                                }
+
+                                is FeedItem.ForumPost -> {
+                                    ForumPostCard(item)
+                                }
+                            }
+                        }
+                    )
+                }
+
+                is DetailUiState.Error -> Text("Something went wrong.")
+            }
+        }
+    }
+}
