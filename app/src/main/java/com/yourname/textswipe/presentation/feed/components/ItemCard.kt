@@ -45,7 +45,6 @@ fun ItemCard(
     var cardModifier = modifier
         .fillMaxSize()
         .padding(15.dp)
-        .padding(top = 75.dp)
         .aspectRatio(0.6f)
         .offset { IntOffset(offset.value.x.roundToInt(), offset.value.y.roundToInt()) }
         .graphicsLayer {
