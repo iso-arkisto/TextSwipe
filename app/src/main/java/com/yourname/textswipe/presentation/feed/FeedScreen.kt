@@ -67,6 +67,7 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                         key(item.id) {
                             ItemCard(
                                 onSwiped = viewModel::onItemSwiped,
+                                modifier = Modifier.padding(top = 75.dp),
                                 isSwipeable = true,
                                 content = {
                                     when (item) {
