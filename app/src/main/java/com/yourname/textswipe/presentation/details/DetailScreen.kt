@@ -84,7 +84,7 @@ fun DetailScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues),
-            contentAlignment = Alignment.BottomCenter,
+            contentAlignment = Alignment.Center,
         ) {
             when (val state = uiState) {
                 is DetailUiState.Loading -> CircularProgressIndicator()
