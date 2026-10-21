@@ -43,4 +43,8 @@ class BookmarkRepositoryImpl @Inject constructor(
     override fun isBookmarked(itemId: String): Flow<Boolean> {
         return bookmarkDao.isBookmarked(itemId)
     }
+
+    override suspend fun isBookmarkedOneShot(itemId: String): Boolean {
+        return bookmarkDao.isBookmarkedOneShot(itemId)
+    }
 }

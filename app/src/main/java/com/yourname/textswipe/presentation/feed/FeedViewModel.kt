@@ -4,10 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.yourname.textswipe.domain.repository.BookmarkRepository
 import com.yourname.textswipe.domain.repository.FeedRepository
-import com.yourname.textswipe.domain.usecase.DeleteBookmarkUseCase
-import com.yourname.textswipe.domain.usecase.SaveBookmarkUseCase
+import com.yourname.textswipe.domain.usecase.IsBookmarkedUseCase
+import com.yourname.textswipe.domain.usecase.ToggleBookmarkUseCase
 import com.yourname.textswipe.utils.FeedRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -27,9 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository,
-    private val bookmarkRepository: BookmarkRepository,
-    private val saveBookmarkUseCase: SaveBookmarkUseCase,
-    private val deleteBookmarkUseCase: DeleteBookmarkUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
+    private val isBookmarkedUseCase: IsBookmarkedUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<FeedUiState>(FeedUiState.Loading)
@@ -50,7 +48,7 @@ class FeedViewModel @Inject constructor(
         .distinctUntilChanged()
         .flatMapLatest { itemId ->
             if(itemId != null) {
-                bookmarkRepository.isBookmarked(itemId)
+                isBookmarkedUseCase(itemId)
             } else {
                 flowOf(false)
             }
@@ -85,27 +83,16 @@ class FeedViewModel @Inject constructor(
         val currentState = _uiState.value
 
         if(currentState is FeedUiState.Success) {
-
             currentState.feedItems.firstOrNull()?.let { item ->
-
                 viewModelScope.launch {
-                    if(isBookmarkedValue) {
-                        val bookmark = bookmarkRepository.getBookmarkByItemId(item.id)
-                        if(bookmark != null) {
-                            val result = deleteBookmarkUseCase(bookmark)
+                    val result = toggleBookmarkUseCase(item.id)
 
-                            result.onFailure {
-                                _uiEvent.send(FeedUiEvent.ShowSnackbar("Failed to remove the bookmark"))
-                            }
+                    result.onFailure {
+                        if(isBookmarkedValue) {
+                            _uiEvent.send(FeedUiEvent.ShowSnackbar("Failed to remove bookmark"))
                         } else {
-                            _uiEvent.send(FeedUiEvent.ShowSnackbar("Bookmark not found"))
+                            _uiEvent.send(FeedUiEvent.ShowSnackbar("Failed to save bookmark"))
                         }
-                    } else {
-                        val result = saveBookmarkUseCase(item.id)
-
-                        result.onFailure {
-                                _uiEvent.send(FeedUiEvent.ShowSnackbar("Failed to save the bookmark"))
-                            }
                     }
                 }
             }

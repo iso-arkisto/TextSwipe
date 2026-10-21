@@ -23,4 +23,7 @@ interface BookmarkDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM bookmarks WHERE item_id = :itemId LIMIT 1)")
     fun isBookmarked(itemId: String): Flow<Boolean>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM bookmarks WHERE item_id = :itemId LIMIT 1)")
+    suspend fun isBookmarkedOneShot(itemId: String): Boolean
 }

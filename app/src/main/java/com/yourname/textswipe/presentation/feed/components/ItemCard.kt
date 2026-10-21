@@ -34,56 +34,61 @@ import kotlin.math.roundToInt
 fun ItemCard(
     onSwiped: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    isSwipeable: Boolean = true
 ) {
     val coroutineScope = rememberCoroutineScope()
     val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
     val screenWidth = with(LocalDensity.current) { LocalConfiguration.current.screenWidthDp.dp.toPx() }
     val swipeThreshold = screenWidth * 0.35f
 
-    Card(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(15.dp)
-            .padding(top = 75.dp)
-            .aspectRatio(0.6f)
-            .offset { IntOffset(offset.value.x.roundToInt(), offset.value.y.roundToInt()) }
-            .graphicsLayer {
-                rotationZ = (offset.value.x / 20f).coerceIn(-15f, 15f)
-                alpha = 1f - (abs(offset.value.x) / screenWidth).coerceIn(0f, 0.4f)
-            }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragEnd = {
-                        coroutineScope.launch {
-                            if (abs(offset.value.x) > swipeThreshold) {
-                                val targetX = if (offset.value.x > 0) screenWidth else -screenWidth
-                                offset.animateTo(
-                                    targetValue = Offset(targetX, offset.value.y),
-                                    animationSpec = tween(durationMillis = 300)
-                                )
-                                onSwiped()
-                            } else {
-                                offset.animateTo(
-                                    targetValue = Offset.Zero,
-                                    animationSpec = tween(durationMillis = 300)
-                                )
-                            }
-                        }
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        coroutineScope.launch {
-                            offset.snapTo(
-                                Offset(
-                                    x = offset.value.x + dragAmount.x,
-                                    y = offset.value.y + dragAmount.y
-                                )
+    var cardModifier = modifier
+        .fillMaxSize()
+        .padding(15.dp)
+        .aspectRatio(0.6f)
+        .offset { IntOffset(offset.value.x.roundToInt(), offset.value.y.roundToInt()) }
+        .graphicsLayer {
+            rotationZ = (offset.value.x / 20f).coerceIn(-15f, 15f)
+            alpha = 1f - (abs(offset.value.x) / screenWidth).coerceIn(0f, 0.4f)
+        }
+
+    if(isSwipeable) {
+        cardModifier = cardModifier.pointerInput(Unit) {
+            detectDragGestures(
+                onDragEnd = {
+                    coroutineScope.launch {
+                        if (abs(offset.value.x) > swipeThreshold) {
+                            val targetX = if (offset.value.x > 0) screenWidth else -screenWidth
+                            offset.animateTo(
+                                targetValue = Offset(targetX, offset.value.y),
+                                animationSpec = tween(durationMillis = 300)
+                            )
+                            onSwiped()
+                        } else {
+                            offset.animateTo(
+                                targetValue = Offset.Zero,
+                                animationSpec = tween(durationMillis = 300)
                             )
                         }
                     }
-                )
-            },
+                },
+                onDrag = { change, dragAmount ->
+                    change.consume()
+                    coroutineScope.launch {
+                        offset.snapTo(
+                            Offset(
+                                x = offset.value.x + dragAmount.x,
+                                y = offset.value.y + dragAmount.y
+                            )
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+    Card(
+        modifier = cardModifier,
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)

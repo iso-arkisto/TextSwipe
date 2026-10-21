@@ -31,7 +31,7 @@ import com.yourname.textswipe.presentation.bookmark.components.BookmarkGridTile
 @Composable
 fun BookmarkScreen(
     viewModel: BookmarkViewModel = hiltViewModel(),
-    onNavigate: (Any) -> Unit
+    onBookmarkClick: (String) -> Unit
 ) {
     val bookmarks by viewModel.bookmarks.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -50,9 +50,6 @@ fun BookmarkScreen(
                 }
                 is BookmarkUiEvent.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(message = event.message)
-                }
-                is BookmarkUiEvent.Navigate -> {
-                    onNavigate(event.route)
                 }
             }
         }
@@ -94,7 +91,7 @@ fun BookmarkScreen(
 
                         BookmarkGridTile(
                             tile = bookmark,
-                            onClick = { viewModel.onBookmarkClicked(itemId) },
+                            onClick = { onBookmarkClick(itemId) },
                             onRemove = { viewModel.deleteBookmarkRequested(itemId) }
                         )
                     }
