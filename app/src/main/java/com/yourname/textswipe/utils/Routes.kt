@@ -10,3 +10,6 @@ data object BookmarksRoute
 
 @Serializable
 data class DetailRoute(val itemId: String)
+
+@Serializable
+data object SearchRoute
