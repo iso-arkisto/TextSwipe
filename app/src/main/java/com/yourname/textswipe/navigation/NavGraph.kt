@@ -8,9 +8,11 @@ import androidx.navigation.compose.composable
 import com.yourname.textswipe.presentation.bookmark.BookmarkScreen
 import com.yourname.textswipe.presentation.details.DetailScreen
 import com.yourname.textswipe.presentation.feed.FeedScreen
+import com.yourname.textswipe.presentation.search.SearchScreen
 import com.yourname.textswipe.utils.BookmarksRoute
 import com.yourname.textswipe.utils.DetailRoute
 import com.yourname.textswipe.utils.FeedRoute
+import com.yourname.textswipe.utils.SearchRoute
 
 @Composable
 fun NavGraph(
@@ -23,7 +25,9 @@ fun NavGraph(
         modifier = modifier
     ) {
         composable<FeedRoute> {
-            FeedScreen()
+            FeedScreen(
+                onSearchClick = { navController.navigate(SearchRoute) }
+            )
         }
         composable<BookmarksRoute> {
             BookmarkScreen(
@@ -33,6 +37,12 @@ fun NavGraph(
         composable<DetailRoute> {
             DetailScreen(
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<SearchRoute> {
+            SearchScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onItemClick = { navController.navigate(DetailRoute(it)) }
             )
         }
     }
