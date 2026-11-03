@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,7 +33,10 @@ import com.yourname.textswipe.presentation.feed.components.QuoteCard
 import com.yourname.textswipe.presentation.feed.components.TextCard
 
 @Composable
-fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
+fun FeedScreen(
+    viewModel: FeedViewModel = hiltViewModel(),
+    onSearchClick: () -> Unit
+) {
     val uiState by viewModel.uiState.collectAsState()
     val isBookmarked by viewModel.isBookmarked.collectAsState()
 
@@ -98,6 +102,19 @@ fun FeedScreen(viewModel: FeedViewModel = hiltViewModel()) {
                             Icon(
                                 imageVector = if(isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                                 contentDescription = if(isBookmarked) "Remove from bookmarks" else "Save to bookmarks",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        IconButton(
+                            onClick = onSearchClick,
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .padding(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
