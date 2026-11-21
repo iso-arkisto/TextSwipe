@@ -21,7 +21,8 @@ fun MainScreen() {
     val navController = rememberNavController()
     val items = listOf(
         BottomNavItem.Feed,
-        BottomNavItem.Bookmarks
+        BottomNavItem.Bookmarks,
+        BottomNavItem.Settings
     )
 
     Scaffold(
