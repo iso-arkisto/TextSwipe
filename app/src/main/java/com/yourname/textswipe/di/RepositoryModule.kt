@@ -2,8 +2,10 @@ package com.yourname.textswipe.di
 
 import com.yourname.textswipe.data.repository.BookmarkRepositoryImpl
 import com.yourname.textswipe.data.repository.FeedRepositoryImpl
+import com.yourname.textswipe.data.repository.SettingsRepositoryImpl
 import com.yourname.textswipe.domain.repository.BookmarkRepository
 import com.yourname.textswipe.domain.repository.FeedRepository
+import com.yourname.textswipe.domain.repository.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,4 +26,10 @@ abstract class RepositoryModule {
     abstract fun bindBookmarkRepository(
         bookmarkRepositoryImpl: BookmarkRepositoryImpl
     ): BookmarkRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSettingsRepository(
+        settingsRepositoryImpl: SettingsRepositoryImpl
+    ): SettingsRepository
 }
