@@ -9,10 +9,12 @@ import com.yourname.textswipe.presentation.bookmark.BookmarkScreen
 import com.yourname.textswipe.presentation.details.DetailScreen
 import com.yourname.textswipe.presentation.feed.FeedScreen
 import com.yourname.textswipe.presentation.search.SearchScreen
+import com.yourname.textswipe.presentation.settings.SettingsScreen
 import com.yourname.textswipe.utils.BookmarksRoute
 import com.yourname.textswipe.utils.DetailRoute
 import com.yourname.textswipe.utils.FeedRoute
 import com.yourname.textswipe.utils.SearchRoute
+import com.yourname.textswipe.utils.SettingsRoute
 
 @Composable
 fun NavGraph(
@@ -44,6 +46,9 @@ fun NavGraph(
                 onNavigateBack = { navController.popBackStack() },
                 onItemClick = { navController.navigate(DetailRoute(it)) }
             )
+        }
+        composable<SettingsRoute> {
+            SettingsScreen()
         }
     }
 }

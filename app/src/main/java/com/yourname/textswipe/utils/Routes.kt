@@ -13,3 +13,6 @@ data class DetailRoute(val itemId: String)
 
 @Serializable
 data object SearchRoute
+
+@Serializable
+data object SettingsRoute
