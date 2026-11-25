@@ -1,7 +1,9 @@
 package com.yourname.textswipe.domain.model
 
-enum class ThemeMode(val title: String) {
-    System("System"),
-    Light("Light"),
-    Dark("Dark")
+import com.yourname.textswipe.R
+
+enum class ThemeMode(val titleRes: Int) {
+    System(R.string.system),
+    Light(R.string.light),
+    Dark(R.string.dark)
 }

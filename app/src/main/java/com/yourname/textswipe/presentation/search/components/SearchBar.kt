@@ -11,7 +11,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.yourname.textswipe.R
 
 @Composable
 fun SearchBar(
@@ -25,7 +27,7 @@ fun SearchBar(
         onValueChange = onQueryChanged,
         modifier = modifier
             .fillMaxWidth(),
-        placeholder = { Text("Search...") },
+        placeholder = { Text(text = stringResource(R.string.search)) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -36,7 +38,7 @@ fun SearchBar(
             IconButton(onClick = onClearClicked) {
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = "Clear"
+                    contentDescription = stringResource(R.string.clear)
                 )
             }
         },

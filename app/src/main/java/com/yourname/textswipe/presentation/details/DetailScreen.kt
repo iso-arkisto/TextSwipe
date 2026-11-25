@@ -25,8 +25,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yourname.textswipe.R
 import com.yourname.textswipe.domain.model.FeedItem
 import com.yourname.textswipe.presentation.feed.components.ForumPostCard
 import com.yourname.textswipe.presentation.feed.components.ItemCard
@@ -57,12 +59,12 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Item Details") },
+                title = { Text(text = stringResource(R.string.item_details)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -70,7 +72,7 @@ fun DetailScreen(
                     IconButton(onClick = viewModel::toggleBookmark) {
                         Icon(
                             imageVector = if(isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                            contentDescription = if(isBookmarked) "Remove from bookmarks" else "Save to bookmarks",
+                            contentDescription = if(isBookmarked) stringResource(R.string.remove_from_bookmarks) else stringResource(R.string.save_to_bookmarks),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -113,7 +115,7 @@ fun DetailScreen(
                     )
                 }
 
-                is DetailUiState.Error -> Text("Something went wrong.")
+                is DetailUiState.Error -> Text(text = stringResource(R.string.something_went_wrong))
             }
         }
     }
