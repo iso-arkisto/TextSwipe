@@ -21,9 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.yourname.textswipe.R
 import com.yourname.textswipe.presentation.search.SearchResult
 
 @Composable
@@ -74,9 +76,9 @@ fun SearchResultCard(
                             Icons.Outlined.BookmarkBorder
                         },
                         contentDescription = if (item.isBookmarked) {
-                            "Remove from bookmarks"
+                            stringResource(R.string.remove_from_bookmarks)
                         } else {
-                            "Save to bookmarks"
+                            stringResource(R.string.save_to_bookmarks)
                         },
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(21.dp)

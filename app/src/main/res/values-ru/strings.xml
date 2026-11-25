@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TextSwipe</string>
+    <string name="feed">Лента</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="settings">Настройки</string>
+    <string name="search">Поиск</string>
+    <string name="theme">Тема</string>
+    <string name="language">Язык</string>
+    <string name="what_are_you_looking_for">Что вы ищете сегодня?</string>
+    <string name="just_start_typing">Просто начните печатать выше.</string>
+    <string name="nothing_found">Ничего не найдено...</string>
+    <string name="try_changing_query">Попробуйте изменить формулировку или проверить запрос на опечатки.</string>
+    <string name="clear">Очистить</string>
+    <string name="save_to_bookmarks">Сохранить в закладки</string>
+    <string name="remove_from_bookmarks">Удалить из закладок</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="undo">Отменить</string>
+    <string name="one_bookmark_deleted">1 закладка удалена</string>
+    <string name="bookmark_folder_lone">Вашей папке с закладками немного одиноко :(</string>
+    <string name="back">Назад</string>
+    <string name="item_details">Подробнее</string>
+    <string name="error_message">Текст ошибки</string>
+    <string name="system">Как в системе</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Темная</string>
+</resources>

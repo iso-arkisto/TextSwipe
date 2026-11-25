@@ -24,9 +24,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.yourname.textswipe.R
 import com.yourname.textswipe.presentation.bookmark.BookmarkTile
 
 @Composable
@@ -73,7 +75,7 @@ fun BookmarkGridTile(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Bookmark,
-                        contentDescription = "Remove from bookmarks",
+                        contentDescription = stringResource(R.string.remove_from_bookmarks),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

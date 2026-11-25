@@ -13,6 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.yourname.textswipe.navigation.NavGraph
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
 import com.yourname.textswipe.navigation.BottomNavItem
 
@@ -40,7 +41,7 @@ fun MainScreen() {
                             imageVector = item.icon,
                             contentDescription = null
                         ) },
-                        label = { Text(item.title) },
+                        label = { Text(text = stringResource(item.titleRes)) },
                         selected = isSelected,
                         onClick = {
                             if(isSelected != item.route) {

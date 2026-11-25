@@ -23,10 +23,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yourname.textswipe.R
 import com.yourname.textswipe.presentation.search.components.SearchBar
 import com.yourname.textswipe.presentation.search.components.SearchResultCard
 import kotlinx.coroutines.delay
@@ -93,7 +95,7 @@ fun SearchScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Something went wrong! Error message: ${state.message}")
+                        Text("${stringResource(R.string.something_went_wrong)}! ${stringResource(R.string.error_message)}: ${state.message}")
                     }
                 }
                 is SearchUiState.Success -> {
@@ -128,9 +130,9 @@ fun SearchScreen(
                         ) {
                             Text(
                                 text = if(query.isNotBlank()) {
-                                    "Nothing found..."
+                                    stringResource(R.string.nothing_found)
                                 } else {
-                                    "What are you looking for today?"
+                                    stringResource(R.string.what_are_you_looking_for)
                                 },
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center,
@@ -141,9 +143,9 @@ fun SearchScreen(
 
                             Text(
                                 text = if(query.isNotBlank()) {
-                                    "Try changing your wording or checking for typos."
+                                    stringResource(R.string.try_changing_query)
                                 } else {
-                                    "Just start typing above."
+                                    stringResource(R.string.just_start_typing)
                                 },
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center,

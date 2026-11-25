@@ -22,10 +22,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yourname.textswipe.R
 import com.yourname.textswipe.presentation.bookmark.components.BookmarkGridTile
 
 @Composable
@@ -33,6 +36,7 @@ fun BookmarkScreen(
     viewModel: BookmarkViewModel = hiltViewModel(),
     onBookmarkClick: (String) -> Unit
 ) {
+    val context = LocalContext.current
     val bookmarks by viewModel.bookmarks.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -41,8 +45,8 @@ fun BookmarkScreen(
             when(event) {
                 is BookmarkUiEvent.ShowUndoShackbar -> {
                     val result = snackbarHostState.showSnackbar(
-                        message = "1 bookmark deleted",
-                        actionLabel = "Undo",
+                        message = context.getString(R.string.one_bookmark_deleted),
+                        actionLabel = context.getString(R.string.undo),
                         duration = SnackbarDuration.Short
                     )
 
@@ -65,7 +69,7 @@ fun BookmarkScreen(
                 .padding(paddingValues)
         ) {
             Text(
-                text = "Bookmarks",
+                text = stringResource(R.string.bookmarks),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -77,7 +81,7 @@ fun BookmarkScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Your bookmark folder is feeling a bit lonely :(")
+                    Text(text = stringResource(R.string.bookmark_folder_lone))
                 }
             } else {
                 LazyVerticalGrid(
